@@ -8,5 +8,12 @@
   },
   "keywords": [],
   "author": "Teodora Vermesan",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.89.0",
+    "webpack-dev-server": "^4.15.1"
+  }
 }
