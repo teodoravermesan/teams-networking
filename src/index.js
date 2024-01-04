@@ -3,11 +3,15 @@ let editId;
 let allTeams = [];
 
 function getTeamAsHTML(team) {
+  const url = team.url;
+  const displayUrl = url.startsWith('https/"') ? url.substring(19) : url;
   return `<tr>
   <td>${team.promotion}</td>
   <td>${team.members}</td>
   <td>${team.name}</td>
-  <td>${team.url}</td>
+  <td>
+  <a href ="${url}" target="_blank"> ${displayUrl}</a>
+  </td>
   <td>
   <button type= "button" data-id= "${team.id}" class="action-btn delete-btn"> ♻ </button>
   <button type= "button" data-id= "${team.id}" class="action-btn edit-btn"> ✏️ </button>
@@ -117,6 +121,9 @@ function getTeamValues() {
 
 function initEvents() {
   $("#teamsForm").addEventListener("submit", onSubmit);
+  $("#teamsForm").addEventListener("reset", () => {
+    editId = undefined;
+  });
 
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
