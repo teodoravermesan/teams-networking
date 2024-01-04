@@ -53,9 +53,29 @@ header img {
   text-shadow: 1px 1px 2px #000000;
 }
 
+#teamsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#teamsTable td,
+#teamsTable th {
+  border: 1px solid #057988;
+  padding: 5px;
+}
+
+#teamsTable th {
+  color: white;
+  background: #057988;
+}
+
 footer {
   background-color: #057988;
   color: white;
   text-align: center;
   padding: 7px;
+}
+
+#teamsTable tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
