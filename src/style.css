@@ -52,6 +52,19 @@ header img {
   padding: 10px;
   text-shadow: 1px 1px 2px #000000;
 }
+.tbar {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+}
+
+.tfill {
+  flex: 1;
+}
+.tbar label {
+  padding: 0 5px;
+}
 
 #teamsTable {
   width: 100%;
