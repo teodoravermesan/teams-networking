@@ -79,10 +79,15 @@ header img {
   box-sizing: border-box;
 }
 
+.table-actions {
+  width: 90px;
+}
+
 #teamsTable td,
 #teamsTable th {
   border: 1px solid #057988;
   padding: 5px;
+  line-height: 25px;
 }
 
 #teamsTable th {
@@ -99,4 +104,26 @@ footer {
 
 #teamsTable tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+.delete-btn {
+  color: #02638d;
+  display: none;
+}
+
+.edit-btn {
+  color: #02638d;
+  display: none;
+}
+
+.action-btn {
+  cursor: pointer;
+  min-width: 35px;
+}
+
+a.edit-row:hover {
+  color: #039903;
+}
+
+#teamsTable tr:hover .action-btn {
+  display: inline-block;
 }
