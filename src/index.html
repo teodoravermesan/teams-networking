@@ -26,19 +26,37 @@
         <label for="search">🔎 </label>
       </div>
 
-      <table id="teamsTable">
-        <thead>
-          <tr>
-            <th>Activity</th>
-            <th>Domain</th>
-            <th>Details</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
+      <form action="secretary.html" method="get">
+        <table id="teamsTable">
+          <colgroup>
+            <col span="1" />
+            <col span="1" />
+            <col span="1" />
+            <col span="1" />
+            <col span="1" style="width: 80px" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Activity</th>
+              <th>Domain</th>
+              <th>Details</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
 
-        <tbody></tbody>
-      </table>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td><input required type="text" name="activity" id="activity" placeholder="Enter activity" /></td>
+              <td><input required type="text" name="domain" id="domain" placeholder="Enter domain" /></td>
+              <td><input required type="text" name="details" id="details" placeholder="Enter details" /></td>
+              <td><input required type="text" name="status" id="status" placeholder="Enter status" /></td>
+              <td><button type="submit">💾</button> <button type="reset">❌</button></td>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
     </section>
 
     <footer>API Docs | Source Code</footer>
