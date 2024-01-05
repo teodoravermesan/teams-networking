@@ -97,13 +97,12 @@ function onSubmit(e) {
     team.id = editId;
     updateTeamRequest(team).then(status => {
       if (status.success) {
-        window, location.reload();
+        window.location.reload();
       }
     });
   } else {
     createTeamRequest(team).then(status => {
       if (status.success) {
-        // window, location.reload();
         team.id = status.id;
         allTeams.push(team);
         renderTeams(allTeams);
@@ -154,7 +153,10 @@ function initEvents() {
       const id = e.target.dataset.id;
       deleteTeamRequest(id).then(status => {
         if (status.success) {
-          window.location.reload();
+          if (status.success) {
+            allTeams = allTeams.filter(team => team.id !== id);
+            renderTeams(allTeams);
+          }
         }
       });
     } else if (e.target.matches("button.edit-btn")) {
