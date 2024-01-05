@@ -1,5 +1,9 @@
 import debounce from "lodash/debounce";
 import "./style.css";
+
+import { $ } from "./utilities";
+import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware";
+
 let editId;
 let allTeams = [];
 
@@ -55,53 +59,10 @@ async function loadTeams() {
   renderTeams(teams);
 }
 
-function loadTeamRequest() {
-  return fetch("http://localhost:3000/teams-json", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(r => r.json());
-}
-
-function createTeamRequest(team) {
-  return fetch("http://localhost:3000/teams-json/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(team)
-  }).then(r => r.json());
-}
-
-function deleteTeamRequest(id) {
-  return fetch("http://localhost:3000/teams-json/delete", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ id: id })
-  }).then(r => r.json());
-}
-
-function updateTeamRequest(team) {
-  return fetch("http://localhost:3000/teams-json/update", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(team)
-  }).then(r => r.json());
-}
-
 function startEdit(id) {
   editId = id;
   const team = allTeams.find(team => team.id === id);
   setValues(team);
-}
-
-function $(selector) {
-  return document.querySelector(selector);
 }
 
 function setValues({ promotion, members, name, url }) {
@@ -193,8 +154,6 @@ function initEvents() {
       renderTeams(teams);
     }, 1000)
   );
-
-  debounce;
 
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsForm").addEventListener("reset", () => {
