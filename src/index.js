@@ -1,11 +1,13 @@
 import debounce from "lodash/debounce";
 import "./style.css";
 
-import { $ } from "./utilities";
+import { $, mask, unMask } from "./utilities";
 import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware";
 
 let editId;
 let allTeams = [];
+
+const formSelector = "#teamsForm";
 
 console.time("app-ready");
 
@@ -87,11 +89,11 @@ function updateTeam(teams, team) {
 
 async function onSubmit(e) {
   e.preventDefault();
+  mask(formSelector);
   const team = getTeamValues();
 
   if (editId) {
     team.id = editId;
-
     const status = await updateTeamRequest(team);
 
     if (status.success) {
@@ -101,6 +103,7 @@ async function onSubmit(e) {
       renderTeams(allTeams);
       $("#teamsForm").reset();
     }
+    unMask(formSelector);
   } else {
     createTeamRequest(team).then(status => {
       if (status.success) {
@@ -118,6 +121,7 @@ async function onSubmit(e) {
       }
     });
   }
+  unMask(formSelector);
 }
 
 function getTeamValues() {
@@ -164,12 +168,14 @@ function initEvents() {
     if (e.target.matches("button.delete-btn")) {
       //  const id = e.target.dataset.id;
       const { id } = e.target.dataset;
+      mask(formSelector);
       deleteTeamRequest(id).then(status => {
         if (status.success) {
           if (status.success) {
             allTeams = allTeams.filter(team => team.id !== id);
             renderTeams(allTeams);
           }
+          unMask(formSelector);
         }
       });
     } else if (e.target.matches("button.edit-btn")) {
@@ -183,8 +189,8 @@ initEvents();
 //this code blocks
 // await loadTeams();
 
-$("#teamsForm").classList.add("loading-mask");
+mask(formSelector);
 loadTeams().then(() => {
   console.timeEnd("app-ready");
-  $("#teamsForm").classList.remove("loading-mask");
+  unMask(formSelector);
 });
