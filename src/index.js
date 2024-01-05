@@ -2,7 +2,7 @@ import "./style.css";
 let editId;
 let allTeams = [];
 
-console.time("app-ready");
+// console.time("app-ready");
 
 function getTeamAsHTML(team) {
   const url = team.url;
@@ -22,9 +22,31 @@ function getTeamAsHTML(team) {
 </tr>`;
 }
 
+let renderedTeams = [];
+function areTeamsEqual(renderedTeams, teams) {
+  if (renderedTeams === teams) {
+    return true;
+  }
+
+  if (renderedTeams.length === teams.length) {
+    const eq = renderedTeams.every((team, i) => team === teams[i]);
+    if (eq) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function renderTeams(teams) {
+  if (areTeamsEqual(renderedTeams, teams)) {
+    return false;
+  }
+  renderedTeams = teams;
+  console.time("render");
   const teamsHTML = teams.map(getTeamAsHTML);
+
   $("#teamsTable tbody").innerHTML = teamsHTML.join("");
+  console.timeEnd("render");
 }
 
 function loadTeams() {
@@ -38,7 +60,7 @@ function loadTeams() {
     .then(teams => {
       allTeams = teams;
       renderTeams(teams);
-      console.timeEnd("app-ready");
+      //   console.timeEnd("app-ready");
     });
 }
 
