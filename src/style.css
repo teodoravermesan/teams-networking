@@ -66,11 +66,15 @@ header img {
   padding: 0 5px;
 }
 
+.select-row {
+  text-align: center;
+}
+
 #teamsTable {
   width: 100%;
 }
 
-#teamsTable input {
+#teamsTable input:not([type="checkbox"]) {
   width: 100%;
   box-sizing: border-box;
 }
@@ -168,4 +172,8 @@ a.edit-row:hover {
   filter: drop-shadow(0 0 2 rgba(0, 0, 0, 0.33));
   line-height: initial;
   font-size: initial;
+}
+
+.select-all-column {
+  width: 40px;
 }
