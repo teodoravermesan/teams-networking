@@ -126,6 +126,7 @@ function onSubmit(e) {
     createTeamRequest(team).then(status => {
       if (status.success) {
         team.id = status.id;
+        allTeams = allTeams.map(team => team);
         allTeams.push(team);
         renderTeams(allTeams);
         $("#teamsForm").reset();
