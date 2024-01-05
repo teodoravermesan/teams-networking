@@ -160,7 +160,11 @@ function initEvents() {
       renderTeams(teams);
     }, 1000)
   );
-
+  $("#selectAll").addEventListener(`input`, e => {
+    document.querySelectorAll("input[name=selected").forEach(check => {
+      check.checked = e.target.checked;
+    });
+  });
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsForm").addEventListener("reset", () => {
     editId = undefined;
