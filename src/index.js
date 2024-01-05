@@ -49,18 +49,19 @@ function renderTeams(teams) {
 }
 
 function loadTeams() {
-  fetch("http://localhost:3000/teams-json", {
+  loadTeamRequest().then(teams => {
+    allTeams = teams;
+    renderTeams(teams);
+  });
+}
+
+function loadTeamRequest() {
+  return fetch("http://localhost:3000/teams-json", {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
     }
-  })
-    .then(r => r.json())
-    .then(teams => {
-      allTeams = teams;
-      renderTeams(teams);
-      //   console.timeEnd("app-ready");
-    });
+  }).then(r => r.json());
 }
 
 function createTeamRequest(team) {
