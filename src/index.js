@@ -2,6 +2,8 @@ import "./style.css";
 let editId;
 let allTeams = [];
 
+console.time("app-ready");
+
 function getTeamAsHTML(team) {
   const url = team.url;
   const displayUrl = url.startsWith('https/"') ? url.substring(19) : url;
@@ -36,6 +38,7 @@ function loadTeams() {
     .then(teams => {
       allTeams = teams;
       renderTeams(teams);
+      console.timeEnd("app-ready");
     });
 }
 
@@ -100,7 +103,11 @@ function onSubmit(e) {
   } else {
     createTeamRequest(team).then(status => {
       if (status.success) {
-        window, location.reload();
+        // window, location.reload();
+        team.id = status.id;
+        allTeams.push(team);
+        renderTeams(allTeams);
+        $("#teamsForm").reset();
       }
     });
   }
