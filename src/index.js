@@ -123,21 +123,22 @@ function updateTeam(teams, team) {
   });
 }
 
-function onSubmit(e) {
+async function onSubmit(e) {
   e.preventDefault();
   const team = getTeamValues();
 
   if (editId) {
     team.id = editId;
-    updateTeamRequest(team).then(status => {
-      if (status.success) {
-        // window.location.reload();
-        //update ...allTeams + copy
-        allTeams = updateTeam(allTeams, team);
-        renderTeams(allTeams);
-        $("#teamsForm").reset();
-      }
-    });
+
+    const status = await updateTeamRequest(team);
+
+    if (status.success) {
+      // window.location.reload();
+      //update ...allTeams + copy
+      allTeams = updateTeam(allTeams, team);
+      renderTeams(allTeams);
+      $("#teamsForm").reset();
+    }
   } else {
     createTeamRequest(team).then(status => {
       if (status.success) {
