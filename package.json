@@ -10,9 +10,7 @@
     "prebuild": "npm run clean",
     "build": "webpack --mode production",
     "start": "webpack serve --open",
-    "demo": "set PORT=8080 && serve docs",
-    "start1": "node server.js",
-    "server": "nodemon server.js"
+    "demo": "set PORT=8080 && serve docs"
   },
   "keywords": [],
   "author": "Teodora Vermesan",
