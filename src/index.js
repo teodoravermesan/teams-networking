@@ -9,8 +9,6 @@ let allTeams = [];
 
 const formSelector = "#teamsForm";
 
-console.time("app-ready");
-
 function getTeamAsHTML({ id, promotion, members, name, url }) {
   const displayUrl = url.startsWith('https/"') ? url.substring(19) : url;
   return `<tr>
@@ -25,7 +23,6 @@ function getTeamAsHTML({ id, promotion, members, name, url }) {
   <td>
   <button type= "button" data-id= "${id}" class="action-btn delete-btn"> ♻ </button>
   <button type= "button" data-id= "${id}" class="action-btn edit-btn"> ✏️ </button>
-
   </td>
 </tr>`;
 }
@@ -35,7 +32,6 @@ function areTeamsEqual(renderedTeams, teams) {
   if (renderedTeams === teams) {
     return true;
   }
-
   if (renderedTeams.length === teams.length) {
     const eq = renderedTeams.every((team, i) => team === teams[i]);
     if (eq) {
@@ -50,11 +46,8 @@ function renderTeams(teams) {
     return false;
   }
   renderedTeams = teams;
-  console.time("render");
   const teamsHTML = teams.map(getTeamAsHTML);
-
   $("#teamsTable tbody").innerHTML = teamsHTML.join("");
-  console.timeEnd("render");
 }
 
 async function loadTeams() {
@@ -79,7 +72,6 @@ function setValues({ promotion, members, name, url }) {
 function updateTeam(teams, team) {
   return teams.map(t => {
     if (t.id === team.id) {
-      console.info("edited", t, team);
       return {
         ...t,
         ...team
@@ -93,14 +85,10 @@ async function onSubmit(e) {
   e.preventDefault();
   mask(formSelector);
   const team = getTeamValues();
-
   if (editId) {
     team.id = editId;
     const status = await updateTeamRequest(team);
-
     if (status.success) {
-      // window.location.reload();
-      //update ...allTeams + copy
       allTeams = updateTeam(allTeams, team);
       renderTeams(allTeams);
       $("#teamsForm").reset();
@@ -110,13 +98,8 @@ async function onSubmit(e) {
     createTeamRequest(team).then(status => {
       if (status.success) {
         team.id = status.id;
-        // allTeams = allTeams.map(team => team);
-        // allTeams.push(team);
-        //copy
-        //spread ele
-        //add at the beggining
         allTeams = [team, ...allTeams];
-        //add at the end
+
         allTeams = [...allTeams, team];
         renderTeams(allTeams);
         $("#teamsForm").reset();
@@ -151,7 +134,19 @@ function filterElements(teams, search) {
   });
 }
 
+async function removeSelected() {
+  mask("#main");
+  const selected = document.querySelectorAll("input[name=selected]:checked");
+  const ids = [...selected].map(input => input.value);
+  const promises = ids.map(id => deleteTeamRequest(id));
+  const statuses = await Promise.allSettled(promises);
+  await loadTeams();
+  unMask("#main");
+}
+
 function initEvents() {
+  $("#removeSelected").addEventListener(`click`, removeSelected);
+
   $("#search").addEventListener(
     "input",
     debounce(e => {
@@ -161,7 +156,7 @@ function initEvents() {
     }, 1000)
   );
   $("#selectAll").addEventListener(`input`, e => {
-    document.querySelectorAll("input[name=selected").forEach(check => {
+    document.querySelectorAll("input[name=selected]").forEach(check => {
       check.checked = e.target.checked;
     });
   });
@@ -172,7 +167,6 @@ function initEvents() {
 
   $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
-      //  const id = e.target.dataset.id;
       const { id } = e.target.dataset;
       mask(formSelector);
       deleteTeamRequest(id).then(status => {
@@ -192,11 +186,8 @@ function initEvents() {
 }
 
 initEvents();
-//this code blocks
-// await loadTeams();
 
 mask(formSelector);
 loadTeams().then(() => {
-  console.timeEnd("app-ready");
   unMask(formSelector);
 });
