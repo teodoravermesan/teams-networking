@@ -2,7 +2,7 @@ import "./style.css";
 let editId;
 let allTeams = [];
 
-// console.time("app-ready");
+console.time("app-ready");
 
 function getTeamAsHTML({ id, promotion, members, name, url }) {
   const displayUrl = url.startsWith('https/"') ? url.substring(19) : url;
@@ -48,11 +48,10 @@ function renderTeams(teams) {
   console.timeEnd("render");
 }
 
-function loadTeams() {
-  loadTeamRequest().then(teams => {
-    allTeams = teams;
-    renderTeams(teams);
-  });
+async function loadTeams() {
+  const teams = await loadTeamRequest();
+  allTeams = teams;
+  renderTeams(teams);
 }
 
 function loadTeamRequest() {
@@ -214,4 +213,9 @@ function initEvents() {
 }
 
 initEvents();
-loadTeams();
+//this code blocks
+// await loadTeams();
+
+loadTeams().then(() => {
+  console.timeEnd("app-ready");
+});
