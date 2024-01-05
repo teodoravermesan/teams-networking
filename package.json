@@ -11,20 +11,13 @@
     "prebuild": "npm run clean",
     "build": "webpack --mode production",
     "start": "webpack serve --open",
-    "demo": "set PORT=8080 && serve docs",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "demo": "set PORT=8080 && serve docs"
   },
   "keywords": [],
   "author": "Teodora Vermesan",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.8.1",
-    "gh-pages": "^6.1.1",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.2",
     "nodemon": "^3.0.2",
