@@ -1,3 +1,4 @@
+import { debounce } from "lodash";
 import "./style.css";
 let editId;
 let allTeams = [];
@@ -184,11 +185,17 @@ function filterElements(teams, search) {
 }
 
 function initEvents() {
-  $("#search").addEventListener("input", e => {
-    const search = e.target.value;
-    const teams = filterElements(allTeams, search);
-    renderTeams(teams);
-  });
+  $("#search").addEventListener(
+    "input",
+    debounce(e => {
+      const search = e.target.value;
+      const teams = filterElements(allTeams, search);
+      renderTeams(teams);
+    }, 1000)
+  );
+
+  debounce;
+
   $("#teamsForm").addEventListener("submit", onSubmit);
   $("#teamsForm").addEventListener("reset", () => {
     editId = undefined;
