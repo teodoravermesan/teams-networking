@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import "./style.css";
 let editId;
 let allTeams = [];
