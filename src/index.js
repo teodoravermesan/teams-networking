@@ -98,7 +98,7 @@ async function onSubmit(e) {
     createTeamRequest(team).then(status => {
       if (status.success) {
         team.id = status.id;
-        allTeams = [team, ...allTeams];
+        //allTeams = [team, ...allTeams];
 
         allTeams = [...allTeams, team];
         renderTeams(allTeams);
