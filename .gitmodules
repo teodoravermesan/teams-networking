@@ -1,0 +1,3 @@
+[submodule "teams-networking"] 
+   path = teams-networking
+   url = github.com/teodoravermesan/teams-networking
