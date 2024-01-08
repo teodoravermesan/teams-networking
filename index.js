@@ -1,3 +1,5 @@
+import { debounce } from "lodash/debounce";
+debounce = require("lodash/debounce");
 import "./style.css";
 
 import { $, mask, unMask } from "./utilities";
@@ -146,12 +148,11 @@ function initEvents() {
 
   $("#search").addEventListener(
     "input",
-    e => {
+    debounce(e => {
       const search = e.target.value;
       const teams = filterElements(allTeams, search);
       renderTeams(teams);
-    },
-    1000
+    }, 1000)
   );
   $("#selectAll").addEventListener(`input`, e => {
     document.querySelectorAll("input[name=selected]").forEach(check => {
