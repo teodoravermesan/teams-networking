@@ -181,7 +181,7 @@ function initEvents() {
   });
 }
 
-const baseUrl = "http://localhost:3000/teams-json";
+const baseUrl = "./data/teams.json";
 function loadTeamRequest() {
   return fetch(baseUrl, {
     method: "GET",
