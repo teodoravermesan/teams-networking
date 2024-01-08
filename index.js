@@ -1,8 +1,8 @@
-import { debounce } from "lodash/debounce";
-debounce = require("lodash/debounce");
+//import { debounce } from "lodash/debounce";
+//debounce = require("lodash/debounce");
 import "./style.css";
 
-import { $, mask, unMask } from "./utilities";
+//import { $, mask, unMask } from "./utilities";
 // import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware.js";
 
 let editId;
@@ -146,14 +146,11 @@ async function removeSelected() {
 function initEvents() {
   $("#removeSelected").addEventListener(`click`, removeSelected);
 
-  $("#search").addEventListener(
-    "input",
-    debounce(e => {
-      const search = e.target.value;
-      const teams = filterElements(allTeams, search);
-      renderTeams(teams);
-    }, 1000)
-  );
+  $("#search").addEventListener("input", e => {
+    const search = e.target.value;
+    const teams = filterElements(allTeams, search);
+    renderTeams(teams);
+  });
   $("#selectAll").addEventListener(`input`, e => {
     document.querySelectorAll("input[name=selected]").forEach(check => {
       check.checked = e.target.checked;
@@ -212,6 +209,18 @@ function deleteTeamRequest(id) {
     },
     body: JSON.stringify({ id: id })
   }).then(r => r.json());
+}
+
+function $(selector) {
+  return document.querySelector(selector);
+}
+
+function mask(selector) {
+  $(selector).classList.add("loading-mask");
+}
+
+function unMask(selector) {
+  $(selector).classList.remove("loading-mask");
 }
 
 function updateTeamRequest(team) {
