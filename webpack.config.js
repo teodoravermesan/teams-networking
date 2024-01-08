@@ -5,15 +5,11 @@ module.exports = env => {
   const isProduction = !!env.WEBPACK_BUILD;
   return {
     mode: isProduction ? "production" : "development",
-    entry: ["./src/index.js"],
+    entry: ["./index.js"],
     devtool: isProduction ? false : "inline-source-map",
-    devServer: {
-      static: ["src"],
-      watchFiles: ["src/**/*.*"]
-    },
     plugins: [
       new HtmlWebpackPlugin({
-        template: "./src/index.html"
+        template: "index.html"
       })
     ],
     module: {
