@@ -1,4 +1,4 @@
-import debounce from "lodash/debounce";
+import { debounce } from "lodash";
 import "./style.css";
 
 import { $, mask, unMask } from "./utilities";
