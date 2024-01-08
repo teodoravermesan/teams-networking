@@ -3,7 +3,7 @@ debounce = require("lodash/debounce");
 import "./style.css";
 
 import { $, mask, unMask } from "./utilities";
-import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware";
+// import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware.js";
 
 let editId;
 let allTeams = [];
@@ -182,6 +182,46 @@ function initEvents() {
       startEdit(id);
     }
   });
+}
+
+const baseUrl = "http://localhost:3000/teams-json";
+function loadTeamRequest() {
+  return fetch(baseUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(r => r.json());
+}
+
+function createTeamRequest(team) {
+  return fetch(`${baseUrl}/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(team)
+  }).then(r => r.json());
+}
+
+function deleteTeamRequest(id) {
+  return fetch(`${baseUrl}/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id: id })
+  }).then(r => r.json());
+}
+
+function updateTeamRequest(team) {
+  return fetch(`${baseUrl}/update`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(team)
+  }).then(r => r.json());
 }
 
 initEvents();
