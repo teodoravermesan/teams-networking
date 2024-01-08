@@ -1,8 +1,8 @@
 import debounce from "lodash/debounce";
 import "./style.css";
 
-import { $, mask, unMask } from "./src/utilities";
-import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./src/middleware";
+import { $, mask, unMask } from "./utilities";
+import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware";
 
 let editId;
 let allTeams = [];
@@ -98,8 +98,6 @@ async function onSubmit(e) {
     createTeamRequest(team).then(status => {
       if (status.success) {
         team.id = status.id;
-        allTeams = [team, ...allTeams];
-
         allTeams = [...allTeams, team];
         renderTeams(allTeams);
         $("#teamsForm").reset();
