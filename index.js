@@ -1,11 +1,11 @@
 import "./style.css";
 
 let editId;
-let allTeams = [];
+let allTasks = [];
 
-const formSelector = "#teamsForm";
+const formSelector = "#tasksForm";
 
-function getTeamAsHTML({ id, activity, domain, details, status }) {
+function getTasksAsHTML({ id, activity, domain, details, status }) {
   const displayUrl = status.startsWith('https/"') ? status.substring(19) : status;
   return `<tr>
   <td class = "select-row">
@@ -23,13 +23,13 @@ function getTeamAsHTML({ id, activity, domain, details, status }) {
 </tr>`;
 }
 
-let renderedTeams = [];
-function areTeamsEqual(renderedTeams, teams) {
-  if (renderedTeams === teams) {
+let renderedTasks = [];
+function areTasksEqual(renderedTasks, tasks) {
+  if (renderedTasks === tasks) {
     return true;
   }
-  if (renderedTeams.length === teams.length) {
-    const eq = renderedTeams.every((team, i) => team === teams[i]);
+  if (renderedTasks.length === tasks.length) {
+    const eq = renderedTasks.every((task, i) => task === tasks[i]);
     if (eq) {
       return true;
     }
@@ -37,25 +37,25 @@ function areTeamsEqual(renderedTeams, teams) {
   return false;
 }
 
-function renderTeams(teams) {
-  if (areTeamsEqual(renderedTeams, teams)) {
+function renderTasks(tasks) {
+  if (areTasksEqual(renderedTasks, tasks)) {
     return false;
   }
-  renderedTeams = teams;
-  const teamsHTML = teams.map(getTeamAsHTML);
-  $("#teamsTable tbody").innerHTML = teamsHTML.join("");
+  renderedTasks = tasks;
+  const tasksHTML = tasks.map(getTasksAsHTML);
+  $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
 
-async function loadTeams() {
-  const teams = await loadTeamRequest();
-  allTeams = teams;
-  renderTeams(teams);
+async function loadTasks() {
+  const tasks = await loadTaskRequest();
+  allTasks = tasks;
+  renderTasks(tasks);
 }
 
 function startEdit(id) {
   editId = id;
-  const team = allTeams.find(team => team.id === id);
-  setValues(team);
+  const task = allTasks.find(task => task.id === id);
+  setValues(task);
 }
 
 function setValues({ activity, domain, details, status }) {
@@ -65,12 +65,12 @@ function setValues({ activity, domain, details, status }) {
   $("input[name=status").value = status;
 }
 
-function updateTeam(teams, team) {
-  return teams.map(t => {
-    if (t.id === team.id) {
+function updateTask(tasks, task) {
+  return tasks.map(t => {
+    if (t.id === task.id) {
       return {
         ...t,
-        ...team
+        ...task
       };
     }
     return t;
@@ -80,30 +80,30 @@ function updateTeam(teams, team) {
 async function onSubmit(e) {
   e.preventDefault();
   mask(formSelector);
-  const team = getTeamValues();
+  const task = getTaskValues();
   if (editId) {
-    team.id = editId;
-    const status = await updateTeamRequest(team);
+    task.id = editId;
+    const status = await updateTaskRequest(task);
     if (status.success) {
-      allTeams = updateTeam(allTeams, team);
-      renderTeams(allTeams);
-      $("#teamsForm").reset();
+      allTasks = updateTask(allTasks, task);
+      renderTasks(allTasks);
+      $("#tasksForm").reset();
     }
     unMask(formSelector);
   } else {
-    createTeamRequest(team).then(status => {
+    createTaskRequest(task).then(status => {
       if (status.success) {
-        team.id = status.id;
-        allTeams = [...allTeams, team];
-        renderTeams(allTeams);
-        $("#teamsForm").reset();
+        task.id = status.id;
+        allTasks = [...allTasks, task];
+        renderTasks(allTasks);
+        $("#tasksForm").reset();
       }
     });
   }
   unMask(formSelector);
 }
 
-function getTeamValues() {
+function getTaskValues() {
   const activity = $("input[name=activity]").value;
   const domain = $("input[name=domain]").value;
   const details = $("input[name=details]").value;
@@ -116,9 +116,9 @@ function getTeamValues() {
   };
 }
 
-function filterElements(teams, search) {
+function filterElements(tasks, search) {
   search = search.toLowerCase();
-  return teams.filter(({ activity, domain, details, status }) => {
+  return tasks.filter(({ activity, domain, details, status }) => {
     return (
       activity.toLowerCase().includes(search) ||
       domain.toLowerCase().includes(search) ||
@@ -132,9 +132,9 @@ async function removeSelected() {
   mask("#main");
   const selected = document.querySelectorAll("input[name=selected]:checked");
   const ids = [...selected].map(input => input.value);
-  const promises = ids.map(id => deleteTeamRequest(id));
+  const promises = ids.map(id => deleteTaskRequest(id));
   const statuses = await Promise.allSettled(promises);
-  await loadTeams();
+  await loadTasks();
   unMask("#main");
 }
 
@@ -143,28 +143,28 @@ function initEvents() {
 
   $("#search").addEventListener("input", e => {
     const search = e.target.value;
-    const teams = filterElements(allTeams, search);
-    renderTeams(teams);
+    const tasks = filterElements(allTasks, search);
+    renderTasks(tasks);
   });
   $("#selectAll").addEventListener(`input`, e => {
     document.querySelectorAll("input[name=selected]").forEach(check => {
       check.checked = e.target.checked;
     });
   });
-  $("#teamsForm").addEventListener("submit", onSubmit);
-  $("#teamsForm").addEventListener("reset", () => {
+  $("#tasksForm").addEventListener("submit", onSubmit);
+  $("#tasksForm").addEventListener("reset", () => {
     editId = undefined;
   });
 
-  $("#teamsTable tbody").addEventListener("click", e => {
+  $("#tasksTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
       const { id } = e.target.dataset;
       mask(formSelector);
-      deleteTeamRequest(id).then(status => {
+      deleteTaskRequest(id).then(status => {
         if (status.success) {
           if (status.success) {
-            allTeams = allTeams.filter(team => team.id !== id);
-            renderTeams(allTeams);
+            allTasks = allTasks.filter(task => task.id !== id);
+            renderTasks(allTasks);
           }
           unMask(formSelector);
         }
@@ -177,7 +177,7 @@ function initEvents() {
 }
 
 const baseUrl = "http://localhost:3000/tasks-json";
-function loadTeamRequest() {
+function loadTaskRequest() {
   return fetch(baseUrl, {
     method: "GET",
     headers: {
@@ -186,17 +186,17 @@ function loadTeamRequest() {
   }).then(r => r.json());
 }
 
-function createTeamRequest(team) {
+function createTaskRequest(task) {
   return fetch(`${baseUrl}/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(team)
+    body: JSON.stringify(task)
   }).then(r => r.json());
 }
 
-function deleteTeamRequest(id) {
+function deleteTaskRequest(id) {
   return fetch(`${baseUrl}/delete`, {
     method: "DELETE",
     headers: {
@@ -218,19 +218,19 @@ function unMask(selector) {
   $(selector).classList.remove("loading-mask");
 }
 
-function updateTeamRequest(team) {
+function updateTaskRequest(task) {
   return fetch(`${baseUrl}/update`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(team)
+    body: JSON.stringify(task)
   }).then(r => r.json());
 }
 
 initEvents();
 
 mask(formSelector);
-loadTeams().then(() => {
+loadTasks().then(() => {
   unMask(formSelector);
 });
