@@ -1,9 +1,4 @@
-//import { debounce } from "lodash/debounce";
-//debounce = require("lodash/debounce");
 import "./style.css";
-
-//import { $, mask, unMask } from "./utilities";
-// import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware.js";
 
 let editId;
 let allTeams = [];
