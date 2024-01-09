@@ -1,25 +1,20 @@
-//import { debounce } from "lodash/debounce";
-//debounce = require("lodash/debounce");
 import "./style.css";
-
-//import { $, mask, unMask } from "./utilities";
-// import { loadTeamRequest, createTeamRequest, deleteTeamRequest, updateTeamRequest } from "./middleware.js";
 
 let editId;
 let allTeams = [];
 
 const formSelector = "#teamsForm";
 
-function getTeamAsHTML({ id, promotion, members, name, url }) {
-  const displayUrl = url.startsWith('https/"') ? url.substring(19) : url;
+function getTeamAsHTML({ id, activity, domain, details, status }) {
+  const displayUrl = status.startsWith('https/"') ? status.substring(19) : status;
   return `<tr>
   <td class = "select-row">
   <input type="checkbox" name="selected" value = "${id}" /></td>
-  <td>${promotion}</td>
-  <td>${members}</td>
-  <td>${name}</td>
+  <td>${activity}</td>
+  <td>${domain}</td>
+  <td>${details}</td>
   <td>
-  <a href ="${url}" target="_blank"> ${displayUrl}</a>
+  <a href ="${status}" target="_blank"> ${displayUrl}</a>
   </td>
   <td>
   <button type= "button" data-id= "${id}" class="action-btn delete-btn"> ♻ </button>
@@ -63,11 +58,11 @@ function startEdit(id) {
   setValues(team);
 }
 
-function setValues({ promotion, members, name, url }) {
-  $("input[name=promotion").value = promotion;
-  $("input[name=members").value = members;
-  $("input[name=name").value = name;
-  $("input[name=url").value = url;
+function setValues({ activity, domain, details, status }) {
+  $("input[name=activity").value = activity;
+  $("input[name=domain").value = domain;
+  $("input[name=details").value = details;
+  $("input[name=status").value = status;
 }
 
 function updateTeam(teams, team) {
@@ -109,26 +104,26 @@ async function onSubmit(e) {
 }
 
 function getTeamValues() {
-  const promotion = $("input[name=promotion]").value;
-  const members = $("input[name=members]").value;
-  const name = $("input[name=name]").value;
-  const url = $("input[name=url]").value;
+  const activity = $("input[name=activity]").value;
+  const domain = $("input[name=domain]").value;
+  const details = $("input[name=details]").value;
+  const status = $("input[name=status]").value;
   return {
-    promotion: promotion,
-    members: members,
-    name: name,
-    url: url
+    activity: activity,
+    domain: domain,
+    details: details,
+    status: status
   };
 }
 
 function filterElements(teams, search) {
   search = search.toLowerCase();
-  return teams.filter(({ promotion, members, name, url }) => {
+  return teams.filter(({ activity, domain, details, status }) => {
     return (
-      promotion.toLowerCase().includes(search) ||
-      members.toLowerCase().includes(search) ||
-      name.toLowerCase().includes(search) ||
-      url.toLowerCase().includes(search)
+      activity.toLowerCase().includes(search) ||
+      domain.toLowerCase().includes(search) ||
+      details.toLowerCase().includes(search) ||
+      status.toLowerCase().includes(search)
     );
   });
 }
