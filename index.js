@@ -4,7 +4,6 @@ let editId;
 let allTasks = [];
 
 const formSelector = "#tasksForm";
-
 const API = {
   CREATE: {
     URL: "http://localhost:3000/tasks-json/create",
@@ -37,7 +36,6 @@ if (isDemo) {
   API.CREATE.METHOD = "GET";
   API.UPDATE.METHOD = "GET";
 }
-
 function getTasksAsHTML({ id, activity, domain, details, status }) {
   const displayUrl = status.startsWith('https/"') ? status.substring(19) : status;
   return `<tr>
@@ -79,13 +77,10 @@ function renderTasks(tasks) {
   $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
 
-function loadTasks() {
-  fetch(API.READ.URL)
-    .then(r => r.json())
-    .then(tasks => {
-      allTasks = tasks;
-      renderTasks(tasks);
-    });
+async function loadTasks() {
+  const tasks = await loadTaskRequest();
+  allTasks = tasks;
+  renderTasks(tasks);
 }
 
 function startEdit(id) {
@@ -133,13 +128,9 @@ async function onSubmit(e) {
   } else {
     createTaskRequest(task).then(status => {
       if (status.success) {
-        if (inlineChanges) {
-          task.id = status.id;
-          allTasks = [...allTasks, task];
-          renderTasks(allTasks);
-        } else {
-          loadTasks();
-        }
+        task.id = status.id;
+        allTasks = [...allTasks, task];
+        renderTasks(allTasks);
         $("#tasksForm").reset();
       }
     });
@@ -223,14 +214,16 @@ function initEvents() {
     }
   });
 }
-// function loadTaskRequest() {
-//   fetch(API.READ.URL)
-//     .then(r => r.json())
-//     .then(tasks => {
-//       allTasks = tasks;
-//       renderTasks(allTasks);
-//     });
-// }
+
+function loadTaskRequest() {
+  const method = API.READ.METHOD;
+  return fetch(API.READ.URL, {
+    method,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(r => r.json());
+}
 
 function createTaskRequest(task) {
   const method = API.CREATE.METHOD;
@@ -279,7 +272,7 @@ function updateTaskRequest(task) {
 
 initEvents();
 
-//mask(formSelector);
+mask(formSelector);
 loadTasks().then(() => {
   unMask(formSelector);
 });
