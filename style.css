@@ -103,7 +103,7 @@ footer {
   background-color: #057988;
   color: white;
   text-align: center;
-  padding: 7px;
+  padding: 1px;
 }
 
 #teamsTable tr:nth-child(even) {
@@ -176,4 +176,19 @@ a.edit-row:hover {
 
 .select-all-column {
   width: 40px;
+}
+
+#footer-menu-bar a:visited {
+  color: #fff;
+}
+#footer-menu-bar a:hover,
+#footer-menu-bar a.active {
+  color: #fff;
+  background-color: #055c88;
+}
+
+#footer-menu-bar li {
+  display: inline;
+  margin: 0;
+  padding: 0;
 }
