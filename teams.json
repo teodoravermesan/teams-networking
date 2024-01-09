@@ -1,26 +1,26 @@
 [
   {
-    "promotion": "Lower back exercises",
-    "members": "Sport",
-    "name": "Do 30 min of lower back exercises",
-    "url": "To Do"
+    "activity": "Lower back exercises",
+    "domain": "Sport",
+    "details": "Do 30 min of lower back exercises",
+    "status": "To Do"
   },
   {
-    "promotion": "Take vitamins",
-    "members": "Medicine",
-    "name": "Take 3 vit D pills",
-    "url": "To Do"
+    "activity": "Take vitamins",
+    "domain": "Medicine",
+    "details": "Take 3 vit D pills",
+    "status": "To Do"
   },
   {
-    "promotion": "Validate QA tickets",
-    "members": "Work",
-    "name": "3 tickets related to custom workflow",
-    "url": "To Do"
+    "activity": "Validate QA tickets",
+    "domain": "Work",
+    "details": "3 tickets related to custom workflow",
+    "status": "To Do"
   },
   {
-    "promotion": "Dish wash",
-    "members": "House",
-    "name": "Wash all wine glasses",
-    "url": "Done"
+    "activity": "Dish wash",
+    "domain": "House",
+    "details": "Wash all wine glasses",
+    "status": "Done"
   }
 ]
