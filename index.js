@@ -1,9 +1,9 @@
 import "./style.css";
 
 let editId;
-let allTasks = [];
+let allTeams = [];
 
-const formSelector = "#tasksForm";
+const formSelector = "#teamsForm";
 
 function getTeamAsHTML({ id, activity, domain, details, status }) {
   const displayUrl = status.startsWith('https/"') ? status.substring(19) : status;
@@ -23,13 +23,13 @@ function getTeamAsHTML({ id, activity, domain, details, status }) {
 </tr>`;
 }
 
-let renderedTasks = [];
-function areTasksEqual(renderedTasks, Tasks) {
-  if (renderedTasks === Tasks) {
+let renderedTeams = [];
+function areTeamsEqual(renderedTeams, teams) {
+  if (renderedTeams === teams) {
     return true;
   }
-  if (renderedTasks.length === Tasks.length) {
-    const eq = renderedTasks.every((team, i) => team === Tasks[i]);
+  if (renderedTeams.length === teams.length) {
+    const eq = renderedTeams.every((team, i) => team === teams[i]);
     if (eq) {
       return true;
     }
@@ -37,24 +37,24 @@ function areTasksEqual(renderedTasks, Tasks) {
   return false;
 }
 
-function renderTasks(tasks) {
-  if (areTasksEqual(renderedTasks, tasks)) {
+function renderTeams(teams) {
+  if (areTeamsEqual(renderedTeams, teams)) {
     return false;
   }
-  renderedTasks = tasks;
-  const tasksHTML = tasks.map(getTeamAsHTML);
-  $("#tasksTable tbody").innerHTML = tasksHTML.join("");
+  renderedTeams = teams;
+  const teamsHTML = teams.map(getTeamAsHTML);
+  $("#teamsTable tbody").innerHTML = teamsHTML.join("");
 }
 
-async function loadTasks() {
-  const Tasks = await loadTeamRequest();
-  allTasks = Tasks;
-  renderTasks(Tasks);
+async function loadTeams() {
+  const teams = await loadTeamRequest();
+  allTeams = teams;
+  renderTeams(teams);
 }
 
 function startEdit(id) {
   editId = id;
-  const team = allTasks.find(team => team.id === id);
+  const team = allTeams.find(team => team.id === id);
   setValues(team);
 }
 
@@ -65,8 +65,8 @@ function setValues({ activity, domain, details, status }) {
   $("input[name=status").value = status;
 }
 
-function updateTeam(Tasks, team) {
-  return Tasks.map(t => {
+function updateTeam(teams, team) {
+  return teams.map(t => {
     if (t.id === team.id) {
       return {
         ...t,
@@ -85,18 +85,18 @@ async function onSubmit(e) {
     team.id = editId;
     const status = await updateTeamRequest(team);
     if (status.success) {
-      allTasks = updateTeam(allTasks, team);
-      renderTasks(allTasks);
-      $("#tasksForm").reset();
+      allTeams = updateTeam(allTeams, team);
+      renderTeams(allTeams);
+      $("#teamsForm").reset();
     }
     unMask(formSelector);
   } else {
     createTeamRequest(team).then(status => {
       if (status.success) {
         team.id = status.id;
-        allTasks = [...allTasks, team];
-        renderTasks(allTasks);
-        $("#tasksForm").reset();
+        allTeams = [...allTeams, team];
+        renderTeams(allTeams);
+        $("#teamsForm").reset();
       }
     });
   }
@@ -116,9 +116,9 @@ function getTeamValues() {
   };
 }
 
-function filterElements(tasks, search) {
+function filterElements(teams, search) {
   search = search.toLowerCase();
-  return tasks.filter(({ activity, domain, details, status }) => {
+  return teams.filter(({ activity, domain, details, status }) => {
     return (
       activity.toLowerCase().includes(search) ||
       domain.toLowerCase().includes(search) ||
@@ -134,7 +134,7 @@ async function removeSelected() {
   const ids = [...selected].map(input => input.value);
   const promises = ids.map(id => deleteTeamRequest(id));
   const statuses = await Promise.allSettled(promises);
-  await loadTasks();
+  await loadTeams();
   unMask("#main");
 }
 
@@ -143,28 +143,28 @@ function initEvents() {
 
   $("#search").addEventListener("input", e => {
     const search = e.target.value;
-    const tasks = filterElements(allTasks, search);
-    renderTasks(tasks);
+    const teams = filterElements(allTeams, search);
+    renderTeams(teams);
   });
   $("#selectAll").addEventListener(`input`, e => {
     document.querySelectorAll("input[name=selected]").forEach(check => {
       check.checked = e.target.checked;
     });
   });
-  $("#tasksForm").addEventListener("submit", onSubmit);
-  $("#tasksForm").addEventListener("reset", () => {
+  $("#teamsForm").addEventListener("submit", onSubmit);
+  $("#teamsForm").addEventListener("reset", () => {
     editId = undefined;
   });
 
-  $("#tasksTable tbody").addEventListener("click", e => {
+  $("#teamsTable tbody").addEventListener("click", e => {
     if (e.target.matches("button.delete-btn")) {
       const { id } = e.target.dataset;
       mask(formSelector);
       deleteTeamRequest(id).then(status => {
         if (status.success) {
           if (status.success) {
-            allTasks = allTasks.filter(task => task.id !== id);
-            renderTasks(allTasks);
+            allTeams = allTeams.filter(team => team.id !== id);
+            renderTeams(allTeams);
           }
           unMask(formSelector);
         }
@@ -231,6 +231,6 @@ function updateTeamRequest(team) {
 initEvents();
 
 mask(formSelector);
-loadTasks().then(() => {
+loadTeams().then(() => {
   unMask(formSelector);
 });

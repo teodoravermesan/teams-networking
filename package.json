@@ -14,7 +14,7 @@
     "demo": "set PORT=8080 && serve docs"
   },
   "keywords": [],
-  "author": "Teodora Vermesan",
+  "author": "Teodora Maria Vermesan",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.8.1",

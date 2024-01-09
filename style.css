@@ -70,16 +70,16 @@ header img {
   text-align: center;
 }
 
-#tasksTable {
+#teamsTable {
   width: 100%;
 }
 
-#tasksTable input:not([type="checkbox"]) {
+#teamsTable input:not([type="checkbox"]) {
   width: 100%;
   box-sizing: border-box;
 }
 
-#tasksTable tfoot input:not([type="image" i]) {
+#teamsTable tfoot input:not([type="image" i]) {
   box-sizing: border-box;
 }
 
@@ -87,14 +87,14 @@ header img {
   width: 90px;
 }
 
-#tasksTable td,
-#tasksTable th {
+#teamsTable td,
+#teamsTable th {
   border: 1px solid #057988;
   padding: 5px;
   line-height: 25px;
 }
 
-#tasksTable th {
+#teamsTable th {
   color: white;
   background: #057988;
 }
@@ -103,10 +103,10 @@ footer {
   background-color: #057988;
   color: white;
   text-align: center;
-  padding: 1px;
+  padding: 7px;
 }
 
-#tasksTable tr:nth-child(even) {
+#teamsTable tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 .delete-btn {
@@ -128,7 +128,7 @@ a.edit-row:hover {
   color: #039903;
 }
 
-#tasksTable tr:hover .action-btn {
+#teamsTable tr:hover .action-btn {
   display: inline-block;
 }
 
