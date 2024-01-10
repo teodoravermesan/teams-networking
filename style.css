@@ -94,9 +94,37 @@ header img {
   line-height: 25px;
 }
 
+header {
+  background: linear-gradient(130deg, #ff7a18, #af002d 41.07%, #319197 76.05%);
+  color: white;
+}
+
+#tasksTable th {
+  border: 1px solid #057988;
+  padding: 5px;
+  line-height: 25px;
+  border-spacing: 0;
+  border-radius: 10px;
+}
+
 #tasksTable th {
   color: white;
   background: #057988;
+}
+
+#search {
+  background-color: #26a776;
+  color: white;
+  padding: 6px 16px 6px 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 130px;
+}
+
+#search:hover,
+#search:focus {
+  background-color: black;
 }
 
 footer {
@@ -109,6 +137,11 @@ footer {
 #tasksTable tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
+#tasksTable tr {
+  vertical-align: middle !important;
+  text-align: center;
+}
 .delete-btn {
   color: #02638d;
   display: none;
@@ -119,9 +152,18 @@ footer {
   display: none;
 }
 
+#tasksTable tr > td:nth-child(3) {
+  vertical-align: middle !important;
+  text-align: center;
+}
+#tasksTable tr > td:nth-child(3) > button {
+  margin: auto;
+}
+
 .action-btn {
   cursor: pointer;
   min-width: 35px;
+  justify-content: center;
 }
 
 a.edit-row:hover {
