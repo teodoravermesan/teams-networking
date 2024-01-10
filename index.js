@@ -73,10 +73,13 @@ function renderTasks(tasks) {
   $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
 
-async function loadTasks() {
-  const tasks = await loadTaskRequest();
-  allTasks = tasks;
-  renderTasks(tasks);
+function loadTasks() {
+  return fetch(API.READ.URL)
+    .then(res => res.json())
+    .then(data => {
+      allTasks = data;
+      renderTasks(data);
+    });
 }
 
 function startEdit(id) {
@@ -104,30 +107,59 @@ function updateTask(tasks, task) {
   });
 }
 
-async function onSubmit(e) {
+function onSubmit(e) {
   e.preventDefault();
   mask(formSelector);
   const task = getTaskValues();
   if (editId) {
-    task.id = editId;
-    const status = await updateTaskRequest(task);
-    if (status.success) {
-      allTasks = updateTask(allTasks, task);
-      renderTasks(allTasks);
-      $("#tasksForm").reset();
-    }
+    updateTask1(task);
     unMask(formSelector);
   } else {
-    createTaskRequest(task).then(status => {
-      if (status.success) {
-        task.id = status.id;
+    saveTask(task);
+    unMask(formSelector);
+  }
+}
+
+function updateTask1(task) {
+  task.id = editId;
+  const method = API.UPDATE.METHOD;
+  fetch(API.UPDATE.URL, {
+    method,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: method === "GET" ? null : JSON.stringify(task)
+  })
+    .then(res => res.json())
+    .then(r => {
+      if (r.success) {
+        allTasks = updateTask(allTasks, task);
+        renderTasks(allTasks);
+        $("#tasksForm").reset();
+      }
+    });
+  unMask(formSelector);
+}
+
+function saveTask(task) {
+  const method = API.CREATE.METHOD;
+  fetch(API.CREATE.URL, {
+    method,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: method === "GET" ? null : JSON.stringify(task)
+  })
+    .then(res => res.json())
+    .then(r => {
+      console.warn(r);
+      if (r.success) {
+        task.id = r.id;
         allTasks = [...allTasks, task];
         renderTasks(allTasks);
         $("#tasksForm").reset();
       }
     });
-  }
-  unMask(formSelector);
 }
 
 function getTaskValues() {
@@ -187,15 +219,7 @@ function initEvents() {
     if (e.target.matches("button.delete-btn")) {
       const { id } = e.target.dataset;
       mask(formSelector);
-      deleteTaskRequest(id).then(status => {
-        if (status.success) {
-          if (status.success) {
-            allTasks = allTasks.filter(task => task.id !== id);
-            renderTasks(allTasks);
-          }
-          unMask(formSelector);
-        }
-      });
+      deleteTaskRequest(id);
     } else if (e.target.matches("button.edit-btn")) {
       const { id } = e.target.dataset;
       startEdit(id);
@@ -203,39 +227,23 @@ function initEvents() {
   });
 }
 
-async function loadTaskRequest() {
-  const method = API.READ.METHOD;
-  const r = await fetch(API.READ.URL, {
-    method,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-  return await r.json();
-}
-
-async function createTaskRequest(task) {
-  const method = API.CREATE.METHOD;
-  const r = await fetch(API.CREATE.URL, {
-    method,
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(task)
-  });
-  return await r.json();
-}
-
-async function deleteTaskRequest(id) {
+function deleteTaskRequest(id) {
   const method = API.DELETE.METHOD;
-  const r = await fetch(API.DELETE.URL, {
+  return fetch(API.DELETE.URL, {
     method,
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ id: id })
-  });
-  return await r.json();
+    body: method === "GET" ? null : JSON.stringify({ id })
+  })
+    .then(r => r.json())
+    .then(r => {
+      if (r.success) {
+        allTasks = allTasks.filter(task => task.id !== id);
+        renderTasks(allTasks);
+      }
+      unMask(formSelector);
+    });
 }
 
 function $(selector) {
@@ -250,20 +258,10 @@ function unMask(selector) {
   $(selector).classList.remove("loading-mask");
 }
 
-function updateTaskRequest(task) {
-  const method = API.UPDATE.METHOD;
-  return fetch(API.UPDATE.URL, {
-    method,
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(task)
-  }).then(r => r.json());
-}
-
 initEvents();
 
 mask(formSelector);
+
 loadTasks().then(() => {
   unMask(formSelector);
 });
