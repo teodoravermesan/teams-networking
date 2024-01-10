@@ -5,6 +5,33 @@ let allTasks = [];
 
 const formSelector = "#tasksForm";
 
+const API = {
+  CREATE: {
+    URL: "http://localhost:3000/tasks-json/create",
+    METHOD: "POST"
+  },
+  READ: {
+    URL: "http://localhost:3000/tasks-json",
+    METHOD: "GET"
+  },
+  UPDATE: {
+    URL: "http://localhost:3000/tasks-json/update",
+    METHOD: "PUT"
+  },
+  DELETE: {
+    URL: "http://localhost:3000/tasks-json/delete",
+    METHOD: "DELETE"
+  }
+};
+
+//for demo purposes..
+if (location.host === "teodoravermesan.github.io") {
+  API.READ.URL = "data/tasks.json";
+  API.DELETE.URL = "data/delete.json";
+  API.CREATE.URL = "data/create.json";
+  API.UPDATE.URL = "data/update.json";
+}
+
 function getTasksAsHTML({ id, activity, domain, details, status }) {
   const displayUrl = status.startsWith('https/"') ? status.substring(19) : status;
   return `<tr>
@@ -47,9 +74,12 @@ function renderTasks(tasks) {
 }
 
 async function loadTasks() {
-  const tasks = await loadTaskRequest();
-  allTasks = tasks;
-  renderTasks(tasks);
+  fetch(API.READ.URL)
+    .then(r => r.json())
+    .then(tasks => {
+      allTasks = tasks;
+      renderTasks(tasks);
+    });
 }
 
 function startEdit(id) {
@@ -175,20 +205,19 @@ function initEvents() {
     }
   });
 }
-
-const baseUrl = "http://localhost:3000/tasks-json";
-function loadTaskRequest() {
-  return fetch(baseUrl, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(r => r.json());
-}
+// function loadTaskRequest() {
+//   fetch(API.READ.URL)
+//     .then(r => r.json())
+//     .then(tasks => {
+//       allTasks = tasks;
+//       renderTasks(allTasks);
+//     });
+// }
 
 function createTaskRequest(task) {
-  return fetch(`${baseUrl}/create`, {
-    method: "POST",
+  const method = API.CREATE.METHOD;
+  return fetch(API.CREATE.URL, {
+    method,
     headers: {
       "Content-Type": "application/json"
     },
@@ -197,8 +226,9 @@ function createTaskRequest(task) {
 }
 
 function deleteTaskRequest(id) {
-  return fetch(`${baseUrl}/delete`, {
-    method: "DELETE",
+  const method = API.DELETE.METHOD;
+  return fetch(API.DELETE.URL, {
+    method,
     headers: {
       "Content-Type": "application/json"
     },
@@ -219,8 +249,9 @@ function unMask(selector) {
 }
 
 function updateTaskRequest(task) {
-  return fetch(`${baseUrl}/update`, {
-    method: "PUT",
+  const method = API.UPDATE.METHOD;
+  return fetch(API.UPDATE.URL, {
+    method,
     headers: {
       "Content-Type": "application/json"
     },

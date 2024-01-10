@@ -12,5 +12,12 @@
     "domain": "Medicine",
     "details": "Take 3 vit D pills",
     "status": "To Do"
+  },
+  {
+    "id": "330x0l1666987570657",
+    "activity": "Create automated test",
+    "domain": "Work",
+    "details": "Create automated test in smoke suite",
+    "status": "Done"
   }
 ]
