@@ -74,12 +74,9 @@ function renderTasks(tasks) {
 }
 
 async function loadTasks() {
-  return fetch(API.READ.URL)
-    .then(r => r.json())
-    .then(tasks => {
-      allTasks = tasks;
-      renderTasks(tasks);
-    });
+  const tasks = await loadTaskRequest();
+  allTasks = tasks;
+  renderTasks(tasks);
 }
 
 function startEdit(id) {
@@ -205,14 +202,16 @@ function initEvents() {
     }
   });
 }
-// function loadTaskRequest() {
-//   fetch(API.READ.URL)
-//     .then(r => r.json())
-//     .then(tasks => {
-//       allTasks = tasks;
-//       renderTasks(allTasks);
-//     });
-// }
+
+function loadTaskRequest() {
+  const method = API.READ.METHOD;
+  return fetch(API.READ.URL, {
+    method,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(r => r.json());
+}
 
 function createTaskRequest(task) {
   const method = API.CREATE.METHOD;
