@@ -126,7 +126,8 @@ function updateTask1(task) {
   fetch(API.UPDATE.URL, {
     method,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Accept: "application/json"
     },
     body: method === "GET" ? null : JSON.stringify(task)
   })
@@ -146,7 +147,8 @@ function saveTask(task) {
   fetch(API.CREATE.URL, {
     method,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Accept: "application/json"
     },
     body: method === "GET" ? null : JSON.stringify(task)
   })
@@ -232,7 +234,8 @@ function deleteTaskRequest(id) {
   return fetch(API.DELETE.URL, {
     method,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Accept: "application/json"
     },
     body: method === "GET" ? null : JSON.stringify({ id })
   })
