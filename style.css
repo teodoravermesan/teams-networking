@@ -72,14 +72,7 @@ header img {
 
 #tasksTable {
   width: 100%;
-  padding-bottom: 0;
-}
-
-#tasksForm {
-  height: 500px;
-  display: inline-block;
-  width: 100%;
-  overflow: auto;
+  padding-bottom: 30px;
 }
 
 #tasksTable input:not([type="checkbox"]) {
@@ -118,28 +111,6 @@ header {
 #tasksTable th {
   color: white;
   background: #057988;
-}
-
-#tasksTable tfoot td {
-  color: white;
-  background: #057988;
-}
-
-#tasksTable tfoot tr {
-  position: sticky;
-  bottom: 0;
-  top: 10px;
-  z-index: 5;
-}
-
-#tasksTable thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-#tasksTable tbody {
-  overflow: auto;
 }
 
 #search {
