@@ -19,5 +19,12 @@
     "domain": "Work",
     "details": "Create automated test in smoke suite",
     "status": "Done"
+  },
+  {
+    "id": "999x0l1666987570657",
+    "activity": "Reading",
+    "domain": "Hobby",
+    "details": "Read 3 books",
+    "status": "Done"
   }
 ]
