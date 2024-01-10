@@ -19,5 +19,12 @@
     "domain": "Work",
     "details": "Create automated test in smoke suite",
     "status": "Done"
+  },
+  {
+    "id": "440x0l1666987570657",
+    "activity": "Refactor automated test",
+    "domain": "Work",
+    "details": "Refactor automated test in smoke suite",
+    "status": "Done"
   }
 ]
