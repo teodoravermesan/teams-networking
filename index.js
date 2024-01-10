@@ -73,13 +73,30 @@ function renderTasks(tasks) {
   $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
 
-function loadTasks() {
-  return fetch(API.READ.URL)
-    .then(res => res.json())
-    .then(data => {
-      allTasks = data;
-      renderTasks(data);
-    });
+// function loadTasks() {
+//   return fetch(API.READ.URL)
+//     .then(res => res.json())
+//     .then(data => {
+//       allTasks = data;
+//       renderTasks(data);
+//     });
+// }
+
+async function loadTasks() {
+  const tasks = await loadTaskRequest();
+  allTasks = tasks;
+  renderTasks(tasks);
+}
+
+async function loadTaskRequest() {
+  const method = API.READ.METHOD;
+  const r = await fetch(API.READ.URL, {
+    method,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  return await r.json();
 }
 
 function startEdit(id) {
