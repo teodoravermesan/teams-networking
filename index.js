@@ -82,14 +82,15 @@ async function loadTasks() {
   renderTasks(tasks);
 }
 
-function loadTaskRequest() {
+async function loadTaskRequest() {
   const method = API.READ.METHOD;
-  return fetch(API.READ.URL, {
+  const r = await fetch(API.READ.URL, {
     method,
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(r => r.json());
+  });
+  return await r.json();
 }
 
 function startEdit(id) {
