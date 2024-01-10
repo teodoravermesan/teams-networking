@@ -30,6 +30,10 @@ if (location.host === "teodoravermesan.github.io") {
   API.DELETE.URL = "data/delete.json";
   API.CREATE.URL = "data/create.json";
   API.UPDATE.URL = "data/update.json";
+
+  API.DELETE.METHOD = "GET";
+  API.CREATE.METHOD = "GET";
+  API.UPDATE.METHOD = "GET";
 }
 
 function getTasksAsHTML({ id, activity, domain, details, status }) {
@@ -72,31 +76,20 @@ function renderTasks(tasks) {
   const tasksHTML = tasks.map(getTasksAsHTML);
   $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
-
-// function loadTasks() {
-//   return fetch(API.READ.URL)
-//     .then(res => res.json())
-//     .then(data => {
-//       allTasks = data;
-//       renderTasks(data);
-//     });
-// }
-
 async function loadTasks() {
   const tasks = await loadTaskRequest();
   allTasks = tasks;
   renderTasks(tasks);
 }
 
-async function loadTaskRequest() {
+function loadTaskRequest() {
   const method = API.READ.METHOD;
-  const r = await fetch(API.READ.URL, {
+  return fetch(API.READ.URL, {
     method,
     headers: {
       "Content-Type": "application/json"
     }
-  });
-  return await r.json();
+  }).then(r => r.json());
 }
 
 function startEdit(id) {
