@@ -22,7 +22,35 @@
   },
   {
     "id": "440x0l1666987570657",
-    "activity": "Refactor automated test",
+    "activity": "Refactor automated test1",
+    "domain": "Work",
+    "details": "Refactor automated test in smoke suite",
+    "status": "Done"
+  },
+  {
+    "id": "220x0l1666987570657",
+    "activity": "Refactor automated test2",
+    "domain": "Work",
+    "details": "Refactor automated test in smoke suite",
+    "status": "Done"
+  },
+  {
+    "id": "430x0l1666987570657",
+    "activity": "Refactor automated test3",
+    "domain": "Work",
+    "details": "Refactor automated test in smoke suite",
+    "status": "Done"
+  },
+  {
+    "id": "280x0l1666987570657",
+    "activity": "Refactor automated test4",
+    "domain": "Work",
+    "details": "Refactor automated test in smoke suite",
+    "status": "Done"
+  },
+  {
+    "id": "440x0l1666987570857",
+    "activity": "Refactor automated test5",
     "domain": "Work",
     "details": "Refactor automated test in smoke suite",
     "status": "Done"
