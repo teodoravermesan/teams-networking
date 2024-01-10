@@ -3,7 +3,7 @@ import "./style.css";
 let editId;
 let allTasks = [];
 
-const formSelector = "#tasksForm";
+const formSelector = "#main";
 
 const API = {
   CREATE: {
