@@ -72,6 +72,14 @@ header img {
 
 #tasksTable {
   width: 100%;
+  padding-bottom: 0;
+}
+
+#tasksForm {
+  height: 500px;
+  display: inline-block;
+  width: 100%;
+  overflow: auto;
 }
 
 #tasksTable input:not([type="checkbox"]) {
@@ -112,6 +120,31 @@ header {
   background: #057988;
 }
 
+#tasksTable tfoot td {
+  color: white;
+  background: #057988;
+}
+
+#tasksTable tfoot tr {
+  position: sticky;
+  bottom: 0;
+  top: 10px;
+  z-index: 5;
+}
+
+#tasksTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+#tasksTable tbody {
+  height: 200px;
+
+  width: 100%;
+  overflow: auto;
+}
+
 #search {
   background-color: #26a776;
   color: white;
@@ -127,11 +160,17 @@ header {
   background-color: black;
 }
 
-footer {
+#footer-menu-bar {
   background-color: #057988;
   color: white;
   text-align: center;
-  padding: 7px;
+  position: fixed;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 5px 5px 5px 5px;
 }
 
 #tasksTable tr:nth-child(even) {
