@@ -5,39 +5,6 @@ let allTasks = [];
 
 const formSelector = "#tasksForm";
 
-const API = {
-  CREATE: {
-    URL: "http://localhost:3000/tasks-json/create",
-    METHOD: "POST"
-  },
-  READ: {
-    URL: "http://localhost:3000/tasks-json",
-    METHOD: "GET"
-  },
-  UPDATE: {
-    URL: "http://localhost:3000/tasks-json/update",
-    METHOD: "PUT"
-  },
-  DELETE: {
-    URL: "http://localhost:3000/tasks-json/delete",
-    METHOD: "DELETE"
-  }
-};
-
-//for demo
-const isDemo = location.host === "teodoravermesan.github.io";
-const inlineChanges = isDemo;
-if (isDemo) {
-  API.READ.URL = "data/tasks.json";
-  API.DELETE.URL = "data/delete.json";
-  API.CREATE.URL = "data/create.json";
-  API.UPDATE.URL = "data/update.json";
-
-  API.DELETE.METHOD = "GET";
-  API.CREATE.METHOD = "GET";
-  API.UPDATE.METHOD = "GET";
-}
-
 function getTasksAsHTML({ id, activity, domain, details, status }) {
   const displayUrl = status.startsWith('https/"') ? status.substring(19) : status;
   return `<tr>
@@ -79,13 +46,10 @@ function renderTasks(tasks) {
   $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
 
-function loadTasks() {
-  return fetch(API.READ.URL)
-    .then(r => r.json())
-    .then(data => {
-      allTasks = data;
-      renderTasks(data);
-    });
+async function loadTasks() {
+  const tasks = await loadTaskRequest();
+  allTasks = tasks;
+  renderTasks(tasks);
 }
 
 function startEdit(id) {
@@ -121,25 +85,17 @@ async function onSubmit(e) {
     task.id = editId;
     const status = await updateTaskRequest(task);
     if (status.success) {
-      if (inlineChanges) {
-        allTasks = updateTask(allTasks, task);
-        renderTasks(allTasks);
-      } else {
-        loadTasks();
-      }
+      allTasks = updateTask(allTasks, task);
+      renderTasks(allTasks);
       $("#tasksForm").reset();
     }
     unMask(formSelector);
   } else {
     createTaskRequest(task).then(status => {
       if (status.success) {
-        if (inlineChanges) {
-          task.id = status.id;
-          allTasks = [...allTasks, task];
-          renderTasks(allTasks);
-        } else {
-          loadTasks();
-        }
+        task.id = status.id;
+        allTasks = [...allTasks, task];
+        renderTasks(allTasks);
         $("#tasksForm").reset();
       }
     });
@@ -207,12 +163,8 @@ function initEvents() {
       deleteTaskRequest(id).then(status => {
         if (status.success) {
           if (status.success) {
-            if (inlineChanges) {
-              allTasks = allTasks.filter(task => task.id !== id);
-              renderTasks(allTasks);
-            } else {
-              loadTasks();
-            }
+            allTasks = allTasks.filter(task => task.id !== id);
+            renderTasks(allTasks);
           }
           unMask(formSelector);
         }
@@ -223,19 +175,20 @@ function initEvents() {
     }
   });
 }
-// function loadTaskRequest() {
-//   fetch(API.READ.URL)
-//     .then(r => r.json())
-//     .then(tasks => {
-//       allTasks = tasks;
-//       renderTasks(allTasks);
-//     });
-// }
+
+const baseUrl = "http://localhost:3000/tasks-json";
+function loadTaskRequest() {
+  return fetch(baseUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(r => r.json());
+}
 
 function createTaskRequest(task) {
-  const method = API.CREATE.METHOD;
-  return fetch(API.CREATE.URL, {
-    method,
+  return fetch(`${baseUrl}/create`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
@@ -244,9 +197,8 @@ function createTaskRequest(task) {
 }
 
 function deleteTaskRequest(id) {
-  const method = API.DELETE.METHOD;
-  return fetch(API.DELETE.URL, {
-    method,
+  return fetch(`${baseUrl}/delete`, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     },
@@ -267,9 +219,8 @@ function unMask(selector) {
 }
 
 function updateTaskRequest(task) {
-  const method = API.UPDATE.METHOD;
-  return fetch(API.UPDATE.URL, {
-    method,
+  return fetch(`${baseUrl}/update`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
