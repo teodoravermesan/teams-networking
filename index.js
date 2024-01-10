@@ -203,36 +203,39 @@ function initEvents() {
   });
 }
 
-function loadTaskRequest() {
+async function loadTaskRequest() {
   const method = API.READ.METHOD;
-  return fetch(API.READ.URL, {
+  const r = await fetch(API.READ.URL, {
     method,
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(r => r.json());
+  });
+  return await r.json();
 }
 
-function createTaskRequest(task) {
+async function createTaskRequest(task) {
   const method = API.CREATE.METHOD;
-  return fetch(API.CREATE.URL, {
+  const r = await fetch(API.CREATE.URL, {
     method,
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(task)
-  }).then(r => r.json());
+  });
+  return await r.json();
 }
 
-function deleteTaskRequest(id) {
+async function deleteTaskRequest(id) {
   const method = API.DELETE.METHOD;
-  return fetch(API.DELETE.URL, {
+  const r = await fetch(API.DELETE.URL, {
     method,
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ id: id })
-  }).then(r => r.json());
+  });
+  return await r.json();
 }
 
 function $(selector) {
