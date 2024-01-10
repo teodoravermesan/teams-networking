@@ -74,7 +74,7 @@ function renderTasks(tasks) {
 }
 
 async function loadTasks() {
-  fetch(API.READ.URL)
+  return fetch(API.READ.URL)
     .then(r => r.json())
     .then(tasks => {
       allTasks = tasks;
