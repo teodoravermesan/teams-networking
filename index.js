@@ -24,18 +24,12 @@ const API = {
   }
 };
 
-//for demo
-const isDemo = location.host === "teodoravermesan.github.io";
-const inlineChanges = isDemo;
-if (isDemo) {
+//for demo purposes..
+if (location.host === "teodoravermesan.github.io") {
   API.READ.URL = "data/tasks.json";
   API.DELETE.URL = "data/delete.json";
   API.CREATE.URL = "data/create.json";
   API.UPDATE.URL = "data/update.json";
-
-  API.DELETE.METHOD = "GET";
-  API.CREATE.METHOD = "GET";
-  API.UPDATE.METHOD = "GET";
 }
 
 function getTasksAsHTML({ id, activity, domain, details, status }) {
@@ -79,12 +73,12 @@ function renderTasks(tasks) {
   $("#tasksTable tbody").innerHTML = tasksHTML.join("");
 }
 
-function loadTasks() {
-  return fetch(API.READ.URL)
+async function loadTasks() {
+  fetch(API.READ.URL)
     .then(r => r.json())
-    .then(data => {
-      allTasks = data;
-      renderTasks(data);
+    .then(tasks => {
+      allTasks = tasks;
+      renderTasks(tasks);
     });
 }
 
@@ -121,25 +115,17 @@ async function onSubmit(e) {
     task.id = editId;
     const status = await updateTaskRequest(task);
     if (status.success) {
-      if (inlineChanges) {
-        allTasks = updateTask(allTasks, task);
-        renderTasks(allTasks);
-      } else {
-        loadTasks();
-      }
+      allTasks = updateTask(allTasks, task);
+      renderTasks(allTasks);
       $("#tasksForm").reset();
     }
     unMask(formSelector);
   } else {
     createTaskRequest(task).then(status => {
       if (status.success) {
-        if (inlineChanges) {
-          task.id = status.id;
-          allTasks = [...allTasks, task];
-          renderTasks(allTasks);
-        } else {
-          loadTasks();
-        }
+        task.id = status.id;
+        allTasks = [...allTasks, task];
+        renderTasks(allTasks);
         $("#tasksForm").reset();
       }
     });
@@ -207,12 +193,8 @@ function initEvents() {
       deleteTaskRequest(id).then(status => {
         if (status.success) {
           if (status.success) {
-            if (inlineChanges) {
-              allTasks = allTasks.filter(task => task.id !== id);
-              renderTasks(allTasks);
-            } else {
-              loadTasks();
-            }
+            allTasks = allTasks.filter(task => task.id !== id);
+            renderTasks(allTasks);
           }
           unMask(formSelector);
         }
