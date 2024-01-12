@@ -7,6 +7,10 @@ module.exports = env => {
     mode: isProduction ? "production" : "development",
     entry: ["./index.js"],
     devtool: isProduction ? false : "inline-source-map",
+    devServer: {
+      static: ["src"],
+      watchFiles: ["src/**/*.*"]
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: "./index.html"
