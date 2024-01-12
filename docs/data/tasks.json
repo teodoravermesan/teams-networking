@@ -1,0 +1,65 @@
+[
+  {
+    "id": "x2v621664213121591",
+    "activity": "Lower back exercises",
+    "domain": "Sport",
+    "details": "Do 30 min of lower back exercises",
+    "status": "To Do"
+  },
+  {
+    "id": "d30x0l1666987510657",
+    "activity": "Take vitamins",
+    "domain": "Medicine",
+    "details": "Take 3 vit D pills",
+    "status": "To Do"
+  },
+  {
+    "id": "330x0l1666987570657",
+    "activity": "Create automated test",
+    "domain": "Work",
+    "details": "Create automated test in smoke suite",
+    "status": "Done"
+  },
+  {
+    "id": "440x0l1666987570657",
+    "activity": "Refactor automated test",
+    "domain": "Work",
+    "details": "Refactor automated test in smoke suite",
+    "status": "Done"
+  },
+  {
+    "id": "220x0l1666987570657",
+    "activity": "Cleanup",
+    "domain": "Work",
+    "details": "Cleanup old tests",
+    "status": "Done"
+  },
+  {
+    "id": "430x0l1666987570657",
+    "activity": "Running",
+    "domain": "Sport",
+    "details": "Run 3 times per week",
+    "status": "Done"
+  },
+  {
+    "id": "280x0l1666987570657",
+    "activity": "Hobby",
+    "domain": "Piano",
+    "details": "Play Piano",
+    "status": "Done"
+  },
+  {
+    "id": "440x0l1666987570857",
+    "activity": "Vacuum",
+    "domain": "House",
+    "details": "Vacuum bedroom, kitchen and balcony",
+    "status": "Done"
+  },
+  {
+    "id": "440y0l1666987570857",
+    "activity": "Trash",
+    "domain": "House",
+    "details": "Take out trash",
+    "status": "Done"
+  }
+]
